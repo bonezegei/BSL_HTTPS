@@ -1,1 +1,24 @@
+/*
+    Socket Live Server (Procedural)
+    Author: Jofel Batutay (Bonezegei)
+    Date: May 25, 2026
+*/
 
+// 1. Load the native entry points from your compiled DLL
+include("lib/https.bzg");
+
+// 2. Initialize the server on port 443 with your SSL certificates
+var server = createHTTPSServer(443, "cert.pem", "key.pem");
+
+server.get = function (path, requestRaw) {
+    print("GET request to: " + path);
+
+    if (path == "/") {
+        server.sendFile("index.html");
+    } else {
+        server.sendResponse("{\"status\":\"404\"}", "application/json", 404);
+    }
+    gc();
+};
+
+server.run();
